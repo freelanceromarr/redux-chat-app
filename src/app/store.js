@@ -1,8 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import {apiSlice} from "../features/api/apiSlice";
+import authReducer from "../features/api/auth/authSlice"
+import conversationsReducer from "../features/api/conversations/conversationsSlice"
+import messagesReducer from "../features/api/messages/messagesSlice"
+
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+   [apiSlice.reducerPath]: apiSlice.reducer,
+   auth: authReducer,
+   conversations: conversationsReducer, 
+   messages: messagesReducer
   },
+  middleware: (getDefaltMiddlewares)=>{
+    return getDefaltMiddlewares().concat(apiSlice.middleware)
+  }
 });
+
+
