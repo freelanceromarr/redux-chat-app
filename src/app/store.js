@@ -12,6 +12,7 @@ export const store = configureStore({
    conversations: conversationsReducer, 
    messages: messagesReducer
   },
+  devTools: true,
   middleware: (getDefaltMiddlewares)=>{
     return getDefaltMiddlewares().concat(apiSlice.middleware)
   }

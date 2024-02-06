@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Error from "../ui/Error";
 import { useRegisterMutation } from "../../features/api/auth/authApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate()
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -12,18 +14,29 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   // register mutation
-  const [register, { data, isLoading, isError, isSuccess }] =
+  const [register, { data, isLoading, error:responseEroor, isSuccess }] =
     useRegisterMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('')
+    setError("");
     if (inputs.password !== inputs.confirmPassword) {
       setError("Pasword does not match");
     } else {
       register(inputs);
     }
   };
+
+  //gettgin data
+
+  useEffect(() => {
+    if (data?.accessToken && data?.user ) {
+      navigate('/inbox')
+    }
+    if (responseEroor?.data) {
+      setError(responseEroor.data)
+    }
+  }, [data, responseEroor, navigate])
 
   return (
     <div className="grid place-items-center h-screen bg-[#F9FAFB">
@@ -141,7 +154,7 @@ const Register = () => {
 
             <div>
               <button
-              disabled={isLoading}
+                disabled={isLoading}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
               >
