@@ -9,6 +9,7 @@ import useAuthCheck from "./hooks/useAuthCheck";
 import PrivateRoute from "./compontents/PrivateRoute";
 import PublicRoute from "./compontents/PublicRoute";
 import Conversations from "./compontents/inbox/Conversations";
+import MessageModal from "./compontents/inbox/MessageModal";
 
 function App() {
   const authChecked = useAuthCheck();

@@ -2,8 +2,10 @@ import { useSelector } from "react-redux";
 import { useGetConversationsQuery } from "../../features/api/conversations/conversationsApi";
 import ChatItem from "./ChatItem";
 import lastTime from "../../utils/readableTime";
+import getParticipants from "../../utils/getParticipants";
+import { Link } from "react-router-dom";
 
-const ChatItems = () => {
+const ChatItems = ({setSelectConversation}) => {
   const { user } = useSelector((state) => state.auth);
   const { email } = user || {};
   const {
@@ -21,15 +23,19 @@ const ChatItems = () => {
     content = <li className="m-2 text-center">{error.data}</li>;
   } else if (!isLoading && !isError && conversations.length > 0) {
     content = conversations.map((conversation) => {
-      const {id, message, timestamp} = conversation
+      const { id, message, timestamp, users } = conversation;
+      const { name } = getParticipants(users, email);
+
       return (
         <li key={id}>
-          <ChatItem
-            avatar="https://cdn.pixabay.com/photo/2018/09/12/12/14/man-3672010__340.jpg"
-            name="Omar Faruk"
-            lastMessage={message}
-            lastTime= {lastTime(timestamp)}
-          />
+          <Link to={`/inbox/${id}`}>
+            <ChatItem
+              avatar="https://cdn.pixabay.com/photo/2018/09/12/12/14/man-3672010__340.jpg"
+              name={name}
+              lastMessage={message}
+              lastTime={lastTime(timestamp)}
+            />
+          </Link>
         </li>
       );
     });
