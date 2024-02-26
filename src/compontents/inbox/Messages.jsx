@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import Message from "./Message";
 
 const Messages = ({messages= []}) => {
-    const {email} = useSelector(state=>state.auth)
+    const {user} = useSelector(state=>state.auth)
   return (
     
     <div className="relative w-full p-6 overflow-y-auto">
@@ -10,7 +10,7 @@ const Messages = ({messages= []}) => {
         {
         messages.slice().sort((a, b)=>b.timestamp-a.timestamp).map((msg) =>{
             const {message,sender} = msg || {};
-            const justify = sender.email !== email ? 'start' : 'end';
+            const justify = sender?.email !== user?.email ? 'start' : 'end';
             return <Message justify={justify} message={message}/>
         })
         }

@@ -3,7 +3,6 @@ import { useGetMessagesQuery } from "../../../features/api/messages/messagesApi"
 import Messages from "../Messages";
 import ChatFooter from "./ChatFooter";
 import ChatHeader from "./ChatHeader";
-import MessageModal from "../MessageModal";
 
 const ChatBody = () => {
   const { id } = useParams();
@@ -16,13 +15,13 @@ const ChatBody = () => {
     content = <div className="m-2 text-center">loading ...</div>;
   } else if (!isLoading && isError) {
     content = <div className="m-2 text-center">{error.data}</div>;
-  } else if (!isLoading && !isError && messages.length > 0) {
+  } else if (!isLoading && !isError && messages?.length > 0) {
     content = (
       <>
         <ChatHeader message = {messages[0]} />
         <Messages messages = {messages} />
        
-        <ChatFooter />
+        <ChatFooter conversationId={id} messages = {messages} />
       </>
     );
   }
