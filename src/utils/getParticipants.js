@@ -1,8 +1,5 @@
-
-
-
 const getParticipants = (users, authEmail) =>{
-    const participants = users.find(user => user.email !== authEmail)
+    const participants = users?.find(user => user?.email !== authEmail)
     return participants;
 }
 

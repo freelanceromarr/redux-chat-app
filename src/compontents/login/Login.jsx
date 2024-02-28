@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Error from "../ui/Error";
 import { useLoginMutation } from "../../features/api/auth/authApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -81,8 +81,15 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end">
-              <div className="text-sm">
+            <div className="flex items-center justify-around ">
+              <div className="text-sm " >
+                <Link to="/register" 
+                  className="font-medium text-violet-600 hover:text-violet-500"
+                >
+                  Already have account ?
+                </Link>
+              </div>
+              <div className="text-sm ">
                 <a
                   href="#"
                   className="font-medium text-violet-600 hover:text-violet-500"
@@ -91,6 +98,7 @@ const Login = () => {
                 </a>
               </div>
             </div>
+            
 
             <div>
               <button

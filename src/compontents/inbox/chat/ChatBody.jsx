@@ -14,14 +14,14 @@ const ChatBody = () => {
   if (isLoading) {
     content = <div className="m-2 text-center">loading ...</div>;
   } else if (!isLoading && isError) {
-    content = <div className="m-2 text-center">{error.data}</div>;
+    content = <div className="m-2 text-center">{error.data.message}</div>;
   } else if (!isLoading && !isError && messages?.length > 0) {
     content = (
       <>
         <ChatHeader message = {messages[0]} />
         <Messages messages = {messages} />
        
-        <ChatFooter conversationId={id} messages = {messages} />
+        <ChatFooter conversationInfo = {messages[0]} />
       </>
     );
   }

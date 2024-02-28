@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useEditConversationMutation } from "../../../features/api/conversations/conversationsApi";
+import { useParams } from "react-router-dom";
 
-const ChatFooter = ({conversationId:conId, messages}) => {
+const ChatFooter = ({conversationInfo}) => {
   const [message, setMessage] = useState('')
   const {user} = useSelector(state=>state.auth)
   const [editConversation, { isLoading, isError, isSuccess }] = useEditConversationMutation();
-  const participatUser = messages[0]?.receiver?.email !== user?.email ? messages[0]?.receiver : messages[0]?.sender
+  
+  const{id}=useParams();
+  const participantUser = conversationInfo?.receiver?.email !== user?.email ? conversationInfo?.receiver : conversationInfo?.sender
   const sendMessageHandler = (e) => {
     e.preventDefault();
     //add message
     editConversation({
-      id: conId,
+      id: id,
       data: {
-        participants: `${user?.email}-${participatUser?.email}`,
-        users: [user, messages[0]?.receiver],
+        participants: `${user?.email}-${participantUser?.email}`,
+        users: [user, participantUser],
         message,
         timestamp: new Date().getTime()
       }, 
-      sender: user?.email,
+      sender: user,
     })
     
   }
@@ -26,7 +29,8 @@ useEffect(() =>{
   if (isSuccess) {
     setMessage('')
   }
-} ,[isSuccess])
+  
+} ,[isSuccess, conversationInfo])
   return (
     <div className="flex items-center justify-between w-full p-3 border-t border-gray-300">
       <button>

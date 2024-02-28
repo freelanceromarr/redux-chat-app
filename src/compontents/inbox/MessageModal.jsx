@@ -35,7 +35,8 @@ const MessageModal = ({ close, openModal }) => {
     }
   }
 
-  const handleSearch = debounceHandler(doSearch, 1000);
+  const handleSearch = debounceHandler(doSearch, 500);
+
   const submitHandler = (e) => {
     e.preventDefault();
     if (getConversation?.length > 0) {
@@ -65,7 +66,7 @@ const MessageModal = ({ close, openModal }) => {
       }})
       
     }
-    console.log('submitted');
+
   }
   const [addConversation, { isSuccess: isAddedConversation }] = useAddConversationMutation()
   const [editConversation, { isSuccess: isEdidtedConversation }] = useEditConversationMutation();

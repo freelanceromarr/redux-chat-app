@@ -3,7 +3,7 @@ import { useGetConversationsQuery } from "../../features/api/conversations/conve
 import ChatItem from "./ChatItem";
 import lastTime from "../../utils/readableTime";
 import getParticipants from "../../utils/getParticipants";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ChatItems = ({setSelectConversation}) => {
   const { user } = useSelector((state) => state.auth);
@@ -23,7 +23,8 @@ const ChatItems = ({setSelectConversation}) => {
     content = <li className="m-2 text-center">{error.data}</li>;
   } else if (!isLoading && !isError && conversations.length > 0) {
     content = conversations.map((conversation) => {
-      const { id, message, timestamp, users } = conversation;
+      const {id, message, timestamp, users } = conversation;
+      
       const { name } = getParticipants(users, email);
 
       return (

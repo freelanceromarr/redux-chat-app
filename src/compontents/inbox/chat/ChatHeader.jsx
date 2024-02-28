@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const ChatHeader = ({message}) => {
     const {user} = useSelector(state=>state.auth);
     const {sender, receiver} = message|| {}
-    const partnerName = sender.email === user.email ? receiver.name : sender.name; 
+    const partnerName = sender?.email === user?.email ? receiver?.name : sender?.name; 
   return (
     <div className="relative flex items-center p-3 border-b border-gray-300">
       <img
