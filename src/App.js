@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
@@ -8,9 +7,6 @@ import { Route, BrowserRouter as Routers, Routes } from "react-router-dom";
 import useAuthCheck from "./hooks/useAuthCheck";
 import PrivateRoute from "./compontents/PrivateRoute";
 import PublicRoute from "./compontents/PublicRoute";
-import Conversations from "./compontents/inbox/Conversations";
-import MessageModal from "./compontents/inbox/MessageModal";
-
 function App() {
   const authChecked = useAuthCheck();
   return !authChecked ? (

@@ -1,5 +1,6 @@
 import { apiSlice } from "../apiSlice";
 import { messagesApi } from "../messages/messagesApi";
+import io from 'socket.io-client';
 
 const conversationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,6 +8,39 @@ const conversationApi = apiSlice.injectEndpoints({
     getConversations: builder.query({
       query: (email) =>
         `conversations/?participants_like=${email}&_sort=timestamp&_order=desc&_page=1&_limit=${process.env.REACT_APP_PAGELIMIT}`,
+        async onCacheEntryAdded(arg, {updateCachedData, cacheDataLoaded, cacheEntryRemoved}){
+          //create socke
+          const socket = io('http://localhost:9000', {
+            reconnectionDelay: 10000, 
+            reconnection: true,
+            reconnectionAttempts:10,
+            transports: ["websocket"],
+            agent: false,
+            upgrade: false,
+            rejectUnauthorized: false,
+          });
+          //listener
+          try {
+            await cacheDataLoaded;
+            socket.on('conversation', (data) =>{
+            const {data:conversation}= data || {};
+            console.log(data);
+              updateCachedData((draft)=>{
+                draft.find(con=>{
+                  if (con.id == conversation.id) {
+                    con.message = conversation.message;
+                    con.timestamp = conversation.timestamp
+                  }
+                })
+              })
+
+            })
+          } catch (error) {
+            await cacheEntryRemoved;
+            socket.close();
+            console.log(error.message);
+          }
+        }
     }),
     getConversation: builder.query({
       query: ({ userEmail, participantEmail }) =>
@@ -20,7 +54,6 @@ const conversationApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         //optimistic cache update
-        console.log(arg.data);
         try {
           const { data: conversation } = await queryFulfilled;
           if (conversation?.id) {
